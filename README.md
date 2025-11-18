@@ -27,7 +27,7 @@ Variables are speaking or documented in defaults/main.yml
 
 
 ## Dependencies
-none
+None
 
 
 ## Example Playbook
