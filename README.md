@@ -23,7 +23,9 @@ ansible-galaxy install joe-speedboat.virt_tools
 
 
 ## Role Variables
-Variables are speaking or documented in defaults/main.yml   
+Variables are documented in `defaults/main.yml`:
+
+- `virt_tools_install`: Controls whether the system should be modified to install virtualization tools. Default is `True`.
 
 
 ## Dependencies
