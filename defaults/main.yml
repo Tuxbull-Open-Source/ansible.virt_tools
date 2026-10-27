@@ -1,6 +1,5 @@
-# defaults/main.yml
 ---
-# Do not modify the System
-virt_tools_install: True
-
-...
+# `auto` uses Ansible's virtualization facts. Override only for an explicitly
+# known guest type when platform fact detection is unavailable.
+virt_tools_install: true
+virt_tools_hypervisor: auto

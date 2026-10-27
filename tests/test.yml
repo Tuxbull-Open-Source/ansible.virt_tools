@@ -1,7 +1,7 @@
 ---
-- name: virt_tools role test
-  hosts: all,!localhost
-  become: True
+- name: Virtual guest tools test
+  hosts: all
+  become: true
+  gather_facts: true
   roles:
-    - joe-speedboat.virt_tools
-...
+    - role: virt_tools

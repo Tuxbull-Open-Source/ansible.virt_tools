@@ -1,31 +1,15 @@
 ---
 galaxy_info:
-#  namespace: joe-speedboat
+  namespace: tuxbull
   role_name: virt_tools
-  author: Chris Ruettimann
-  description: Ansible role to install virt tools
-  license: GPLv3
-  min_ansible_version: 2.8
-
+  author: Tuxbull-Open-Source
+  description: Install guest tools for KVM and VMware guests
+  license: GPL-3.0-only
+  min_ansible_version: '2.15'
   platforms:
     - name: EL
-      versions:
-        - 7
-        - 8
-        - 9
+      versions: ['8', '9', '10']
     - name: Ubuntu
-      versions:
-        - bionic
-        - focal
-        - jammy
-    - name: Debian
-      versions:
-        - stretch
-        - buster
-        - bullseye
-
-  galaxy_tags:
-    - system
-    - virtualization
-
+      versions: ['focal', 'jammy', 'noble']
+  galaxy_tags: [virtualization, kvm, vmware, guest]
 dependencies: []

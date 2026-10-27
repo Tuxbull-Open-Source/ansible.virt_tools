@@ -1,35 +1,19 @@
-# tasks/Ubuntu/20_install_virt_tools.yml
 ---
-- name: virt_tools_install is True, so we maintain this system
-  block:
-  - name: install virt tools for vmware guests
-    block:
-    - name: install virt tools
-      apt:
-        name: "{{ pkg_debian_vmw }}"
-        state: present
+- name: Install guest tools for supported virtualization platform
+  ansible.builtin.apt:
+    name: "{{ virt_tools_packages[virt_tools_platform] }}"
+    state: present
+    update_cache: true
+  when:
+    - virt_tools_install | bool
+    - virt_tools_platform != 'none'
 
-    - name: enable virt tools service
-      systemd:
-        name: "{{ item }}"
-        state: started
-        enabled: True
-      with_items: "{{ svc_debian_vmw }}"
-    when: ansible_system_vendor == "VMware, Inc." and do_install_tools == True
-
-  - name: install virt tools for kvm guests
-    block:
-    - name: install virt tools
-      apt:
-        name: "{{ pkg_debian_kvm }}"
-        state: present
-
-    - name: enable virt tools service
-      systemd:
-        name: "{{ item }}"
-        state: started
-        enabled: True
-      with_items: "{{ svc_debian_kvm }}"
-    when: ansible_system_vendor == "Red Hat" and do_install_tools == True
-  when: virt_tools_install == True
-...
+- name: Enable guest tool services
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    enabled: true
+    state: started
+  loop: "{{ virt_tools_services[virt_tools_platform] }}"
+  when:
+    - virt_tools_install | bool
+    - virt_tools_platform != 'none'
