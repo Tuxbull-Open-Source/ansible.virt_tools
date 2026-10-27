@@ -1,45 +1,27 @@
-# Absible Role: virt_tools
-This role does install virt tools on RHEL and Ubuntu LTS Systems.   
-Curently, we support:
-* VMware
-* KVM
+# Ansible virtual guest tools role
 
-## Requirements
-Please look into `meta\main.yml`
+Install and enable guest tools for KVM or VMware virtual machines.
 
-## Install Role from Git
+## Variables
+
+| Variable | Default | Description |
+| --- | --- | --- |
+| `virt_tools_install` | `true` | Install and enable guest tools. |
+| `virt_tools_hypervisor` | `auto` | `auto`, `kvm`, `vmware`, or `none`. |
+
+In `auto` mode the role selects KVM for Ansible KVM facts and VMware for
+VMware facts. Set `none` to make no guest-tool changes.
+
+## Example
+
+```yaml
+- hosts: virtual_machines
+  become: true
+  roles:
+    - role: tuxbull.virt_tools
 ```
-git clone git@github.com:joe-speedboat/ansible.mtp.git /etc/ansible/roles/joe-speedboat.virt_tools
-cd /etc/ansible/roles/joe-speedboat.virt_tools
-rm -rf .git
-``` 
 
+## Limitations
 
-## Install Role from Galaxy
-```
-ansible-galaxy install joe-speedboat.virt_tools
-``` 
-
-
-
-## Role Variables
-Variables are documented in `defaults/main.yml`:
-
-- `virt_tools_install`: Controls whether the system should be modified to install virtualization tools. Default is `True`.
-
-
-## Dependencies
-None
-
-
-## Example Playbook
-Are located in `test` folder of the role
-
-
-## License
-GPLv3
-
-
-# Author Information
-* Chris Ruettimann<chris@bitbull.ch>
-* https://www.bitbull.ch 
+The role manages guest packages and services only. It does not install a
+hypervisor, configure virtual hardware, or validate host-to-guest integration.

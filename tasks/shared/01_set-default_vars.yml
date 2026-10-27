@@ -1,9 +1,14 @@
-# 01_set-default_vars.yml
 ---
-- name: set default variables
-  set_fact:
-    is_virtual_machine: False
-    file_virt_tools: False
-    process_virt_tools: False
-    do_install_tools: False
-...
+- name: Determine virtualization platform
+  ansible.builtin.set_fact:
+    virt_tools_platform: >-
+      {{ virt_tools_hypervisor if virt_tools_hypervisor != 'auto' else
+         ('vmware' if ansible_virtualization_type | lower == 'vmware' else
+          'kvm' if ansible_virtualization_type | lower in ['kvm', 'qemu'] else
+          'none') }}
+
+- name: Validate virtualization platform selection
+  ansible.builtin.assert:
+    that:
+      - virt_tools_platform in ['kvm', 'vmware', 'none']
+    fail_msg: virt_tools_hypervisor must be auto, kvm, vmware, or none.

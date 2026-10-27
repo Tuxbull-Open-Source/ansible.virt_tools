@@ -1,0 +1,23 @@
+---
+- name: Gather installed package facts
+  ansible.builtin.package_facts:
+    manager: auto
+
+- name: Install guest tools for supported virtualization platform
+  ansible.builtin.dnf:
+    name: "{{ virt_tools_packages[virt_tools_platform] }}"
+    state: present
+  when:
+    - virt_tools_install | bool
+    - virt_tools_platform != 'none'
+    - virt_tools_packages[virt_tools_platform] | reject('in', ansible_facts.packages.keys()) | list | length > 0
+
+- name: Enable guest tool services
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    enabled: true
+    state: started
+  loop: "{{ virt_tools_services[virt_tools_platform] }}"
+  when:
+    - virt_tools_install | bool
+    - virt_tools_platform != 'none'
